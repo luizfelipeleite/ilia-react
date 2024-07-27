@@ -1,18 +1,30 @@
-import {fetchData, fakeStoreApi} from '../../utils/api';
 import {FormEvent, useState} from "react";
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const fakeStoreApi: string | undefined = process.env.REACT_APP_FAKE_STORE_ENDPOINT;
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         setError('');
 
         try {
-            const response = await fetchData(`${fakeStoreApi}/auth/login`, {username, password});
-            console.log(response.token);
+            const response = await fetch(`${fakeStoreApi}/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({username, password})
+            });
+
+            if (response.ok) {
+                const responseJson = await response.json();
+                console.log(responseJson.token);
+            } else {
+                setError(await response.text());
+            }
         } catch (error: unknown) {
             if (error instanceof Error) {
                 setError(error.message);
@@ -21,7 +33,7 @@ const LoginForm = () => {
     }
 
     return (
-        <div className="h-screen flex items-center justify-center ">
+        <div className="h-screen flex items-center justify-center">
             <form onSubmit={handleSubmit} className="bg-white w-full max-w-xs shadow-md rounded px-8 pt-6 pb-8 mb-4">
                 <div className="mb-2">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
