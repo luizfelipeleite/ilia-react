@@ -1,9 +1,11 @@
-import {useEffect, useState} from "react";
+import React, {useState, useEffect} from "react";
 import {Product} from "../interfaces/Product";
 import ProductList from "../components/products/ProductList";
+import CreateOrder from "../components/orders/CreateOrder";
 
 const Dashboard = () => {
     const [products, setProducts] = useState<Product[]>([]);
+    const [cart, setCart] = useState<Product[]>([]);
     const [error, setError] = useState<string>('');
     const fakeStoreApi: string | undefined = process.env.REACT_APP_FAKE_STORE_ENDPOINT;
 
@@ -28,12 +30,18 @@ const Dashboard = () => {
         };
 
         fetchProducts();
-    }, []);
+    }, [fakeStoreApi]);
+
+    const handleAddToCart = (product: Product) => {
+        setCart([...cart, product]);
+    };
 
     return (
         <>
+            <h1 className="text-3xl font-bold my-4">Dashboard</h1>
             {error && <p className="text-red-500 text-xs">{error}</p>}
-            <ProductList products={products}/>
+            <ProductList products={products} onAddToCart={handleAddToCart}/>
+            <CreateOrder cart={cart}/>
         </>
     );
 }

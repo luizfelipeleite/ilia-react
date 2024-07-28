@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard";
 function App() {
     return (
         <div className="App bg-gray-100">
-            {/*<LoginForm/>*/}
+            <LoginForm/>
             <Dashboard/>
         </div>
     );
