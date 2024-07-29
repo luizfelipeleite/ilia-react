@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import {Product} from "../interfaces/Product";
 import ProductList from "../components/products/ProductList";
-import CreateOrder from "../components/orders/CreateOrder";
+import AuthContext from "../contexts/AuthContext";
 
-const Dashboard = () => {
+const Products: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
-    const [cart, setCart] = useState<Product[]>([]);
     const [error, setError] = useState<string>('');
+    const {cart, setCart} = useContext(AuthContext);
     const fakeStoreApi: string | undefined = process.env.REACT_APP_FAKE_STORE_ENDPOINT;
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        (async () => {
             try {
                 const response = await fetch(`${fakeStoreApi}/products`, {
                     method: 'GET',
@@ -27,9 +27,7 @@ const Dashboard = () => {
                     setError(error.message);
                 }
             }
-        };
-
-        fetchProducts();
+        })();
     }, [fakeStoreApi]);
 
     const handleAddToCart = (product: Product) => {
@@ -37,13 +35,13 @@ const Dashboard = () => {
     };
 
     return (
-        <>
-            <h1 className="text-3xl font-bold my-4">Dashboard</h1>
-            {error && <p className="text-red-500 text-xs">{error}</p>}
-            <ProductList products={products} onAddToCart={handleAddToCart}/>
-            <CreateOrder cart={cart}/>
-        </>
+        <div className="min-h-screen bg-gray-100 p-4">
+            <main className="container mx-auto">
+                {error && <p className="text-red-500 text-xs">{error}</p>}
+                <ProductList products={products} onAddToCart={handleAddToCart}/>
+            </main>
+        </div>
     );
 }
 
-export default Dashboard;
+export default Products;

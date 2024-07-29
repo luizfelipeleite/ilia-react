@@ -1,9 +1,13 @@
-import {FormEvent, useState} from "react";
+import React, {FormEvent, useState, useContext} from "react";
+import {useNavigate} from 'react-router-dom';
+import AuthContext from "../../contexts/AuthContext";
 
-const LoginForm = () => {
+const LoginForm: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const {setToken} = useContext(AuthContext);
     const fakeStoreApi: string | undefined = process.env.REACT_APP_FAKE_STORE_ENDPOINT;
 
     const handleSubmit = async (event: FormEvent) => {
@@ -21,7 +25,8 @@ const LoginForm = () => {
 
             if (response.ok) {
                 const responseJson = await response.json();
-                console.log(responseJson.token);
+                setToken(responseJson.token);
+                navigate('/');
             } else {
                 setError(await response.text());
             }

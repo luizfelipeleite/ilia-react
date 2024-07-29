@@ -1,5 +1,7 @@
 import React from "react";
 import {Product} from "../../interfaces/Product";
+import {toast} from 'react-toastify';
+import {FaShoppingCart} from "react-icons/fa";
 
 interface ProductListProps {
     products: Product[];
@@ -7,6 +9,11 @@ interface ProductListProps {
 }
 
 const ProductList: React.FC<ProductListProps> = ({products, onAddToCart}) => {
+    const handleAddToCart = (product: Product) => {
+        onAddToCart(product);
+        toast.success("Product added to cart!");
+    };
+
     return (
         <section className="flex flex-col justify-center items-center p-4">
             <h2 className="text-2xl font-semibold my-5">Products List</h2>
@@ -24,9 +31,9 @@ const ProductList: React.FC<ProductListProps> = ({products, onAddToCart}) => {
                         <p className="text-gray-700 mb-4">${product.price}</p>
                         <button
                             className="bg-blue-500 text-white px-5 py-2 rounded flex items-center justify-center"
-                            onClick={() => onAddToCart(product)}
+                            onClick={() => handleAddToCart(product)}
                         >
-                            Add to Cart
+                            <FaShoppingCart className="mr-2"/> Add to Cart
                         </button>
                     </div>
                 ))}
