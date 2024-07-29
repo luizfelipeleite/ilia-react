@@ -1,3 +1,16 @@
+# E-Commerce Project
+
+## Overview
+
+This project is an e-commerce application built with React and TypeScript. It includes functionalities for managing products, a shopping cart, and order processing.
+
+The project utilizes the [Fake Store API](https://fakestoreapi.com) to provide product data and simulate interactions with an e-commerce backend. Additionally, user information can be retrieved from the same API to handle authentication and user-specific operations.
+
+## Authentication
+
+To access the system, you need to authenticate with a username and password. You can obtain valid credentials from the [Fake Store API](https://fakestoreapi.com/users).
+Use the username and password of any user from the list to log in to the application.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
